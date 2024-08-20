@@ -1,9 +1,23 @@
 import pets from "../petsData";
 import PetItem from "./PetItem";
+import { useState } from "react";
 
 function PetsList() {
-  const petList = pets.map((pet) => <PetItem pet={pet} key={pet.id} />);
+  const [query, setQuery] = useState("");
+  let list = pets.filter((pet) => {
+    if (pet.name.toLocaleLowerCase().includes(query.toLocaleLowerCase())) {
+      return true;
+    } else {
+      return false;
+    }
+  });
 
+  const petList = list.map((pet) => <PetItem pet={pet} key={pet.id} />);
+
+  const changeQuery = (e) => {
+    setQuery(e.target.value);
+  };
+  console.log(query);
   return (
     <section id="doctors" className="doctor-section pt-140">
       <div className="container">
@@ -20,6 +34,7 @@ function PetsList() {
                   placeholder="Search"
                   aria-label="Search"
                   aria-describedby="search-addon"
+                  onChange={changeQuery}
                 />
               </div>
               <br />
